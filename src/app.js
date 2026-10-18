@@ -1,28 +1,28 @@
 (function () {
   const $ = id => document.getElementById(id);
   const tones = ["var(--tile-a)", "var(--tile-b)", "var(--tile-c)"];
-  const demo = [["본식", "3/4"], ["야외 스냅", "4/5"], ["본식", "4/3"], ["웨딩데이", "3/4"], ["가봉", "4/5"], ["야외 스냅", "1/1"]];
-  let cat = "all";
+  const demo = [["본식", "식장 이름"], ["야외 스냅", "촬영 장소"], ["본식", "식장 이름"]];
+  let cat = "all", albums = [];
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 
-  function tile(cat, inner) {
-    const b = document.createElement("button");
-    b.className = "tile"; b.dataset.cat = cat; b.append(...inner);
-    $("grid").appendChild(b); return b;
-  }
   function render(data) {
-    $("grid").textContent = "";
-    if (!data.photos.length) {
+    albums = data.albums || [];
+    const box = $("albums"); box.textContent = "";
+    if (!albums.length) {
       demo.forEach((p, i) => {
-        const ph = document.createElement("div"); ph.className = "ph";
-        ph.style.cssText = `aspect-ratio:${p[1]};background:linear-gradient(${160 + i * 7}deg,${tones[i % 3]},${tones[(i + 1) % 3]})`;
-        const b = tile(p[0], [ph]); b.tabIndex = -1; b.style.cursor = "default";
+        const card = el("div", "album"); const c = el("div", "cover");
+        c.style.background = `linear-gradient(${160 + i * 9}deg,${tones[i % 3]},${tones[(i + 1) % 3]})`;
+        card.append(c, el("div", "t", p[1]), el("div", "m", p[0] + " · 준비 중"));
+        card.dataset.cat = p[0]; box.appendChild(card);
       });
     }
-    data.photos.forEach(p => {
-      const img = new Image(); img.src = p.src; img.loading = "lazy"; img.alt = p.cat + (p.cap ? " · " + p.cap : "");
-      const parts = [img];
-      if (p.cap) { const m = document.createElement("span"); m.className = "meta"; m.style.cssText = "color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4)"; m.textContent = p.cap; parts.push(m); }
-      const b = tile(p.cat, parts); b.setAttribute("aria-label", img.alt + " 크게 보기"); b.onclick = () => openLb(p);
+    albums.forEach((a, i) => {
+      const b = el("button", "album"); b.type = "button"; b.dataset.cat = a.cat;
+      const c = el("div", "cover"); const im = new Image(); im.src = a.cover; im.alt = a.title + " 대표 사진"; im.loading = "lazy"; c.appendChild(im);
+      const m = el("div", "m"); m.append(el("span", "", a.cat), el("span", "", a.date), el("span", "", a.photos.length + "장"));
+      b.append(c, el("div", "t", a.title), m);
+      b.onclick = () => openAlbum(i, true);
+      box.appendChild(b);
     });
     filter();
     if (data.hero) {
@@ -31,18 +31,42 @@
     }
     $("kakaoLine").textContent = data.kakaoName ? "카카오톡 채널 " + data.kakaoName : "카카오톡 채널 준비 중";
     if (data.kakaoUrl) $("kakao").href = data.kakaoUrl; else $("kakao").hidden = true;
+    const m = location.hash.match(/^#album(\d+)$/); if (m && albums[+m[1]]) openAlbum(+m[1], false);
   }
-  function filter() { $("grid").querySelectorAll(".tile").forEach(t => t.hidden = !(cat === "all" || t.dataset.cat === cat)); }
+  function filter() { $("albums").querySelectorAll(".album").forEach(t => t.hidden = !(cat === "all" || t.dataset.cat === cat)); }
   document.querySelectorAll(".chip[data-cat]").forEach(c => c.onclick = () => {
     document.querySelectorAll(".chip[data-cat]").forEach(x => x.setAttribute("aria-pressed", x === c));
     cat = c.dataset.cat; filter();
   });
 
+  // 앨범 화면 (폰 뒤로가기로 닫힘)
+  const av = $("av");
+  function openAlbum(i, push) {
+    const a = albums[i];
+    $("avMeta").textContent = [a.cat, a.date, a.photos.length + "장"].filter(Boolean).join(" · ");
+    $("avTitle").textContent = a.title;
+    $("avIntro").textContent = a.intro; $("avIntro").hidden = !a.intro;
+    const g = $("avGrid"); g.textContent = "";
+    a.photos.forEach(p => {
+      const b = el("button", "tile"); b.type = "button";
+      const im = new Image(); im.src = p.src; im.loading = "lazy"; im.alt = a.title + (p.cap ? " · " + p.cap : "");
+      b.appendChild(im); b.setAttribute("aria-label", im.alt + " 크게 보기"); b.onclick = () => openLb(p, a);
+      g.appendChild(b);
+    });
+    av.hidden = false; av.scrollTop = 0; document.body.style.overflow = "hidden";
+    if (push) history.pushState({ album: i }, "", "#album" + i);
+    $("avBack").focus();
+  }
+  function closeAlbum() { av.hidden = true; document.body.style.overflow = ""; }
+  $("avBack").onclick = () => { if (history.state && history.state.album != null) history.back(); else { closeAlbum(); history.replaceState(null, "", "#portfolio"); } };
+  $("avBook").onclick = () => { closeAlbum(); history.replaceState(null, "", "#booking"); };
+  window.addEventListener("popstate", () => { if (!/^#album/.test(location.hash)) closeAlbum(); lb.hidden = true; });
+
   const lb = $("lb");
-  function openLb(p) { $("lbph").hidden = true; const im = $("lbimg"); im.src = p.src; im.alt = p.cap || p.cat; $("lbcap").textContent = p.cat + (p.cap ? " · " + p.cap : ""); lb.hidden = false; $("lbx").focus(); }
+  function openLb(p, a) { $("lbph").hidden = true; const im = $("lbimg"); im.src = p.src; im.alt = p.cap || a.title; $("lbcap").textContent = a.title + (p.cap ? " · " + p.cap : ""); lb.hidden = false; $("lbx").focus(); }
   $("lbx").onclick = () => lb.hidden = true;
   lb.onclick = e => { if (e.target === lb) lb.hidden = true; };
-  document.addEventListener("keydown", e => { if (e.key === "Escape") lb.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!lb.hidden) lb.hidden = true; else if (!av.hidden) $("avBack").click(); });
 
   // 예약 문의
   ["name", "phone", "venue", "memo", "date", "time"].forEach(id => $(id).value = "");
@@ -74,5 +98,5 @@
   $("again").onclick = () => { done.hidden = true; form.hidden = false; $("copy").textContent = "내용 복사"; };
 
   fetch("photos.json", { cache: "no-cache" }).then(r => r.json()).then(render)
-    .catch(() => render({ photos: [], hero: "", kakaoUrl: "", kakaoName: "" }));
+    .catch(() => render({ albums: [], hero: "", kakaoUrl: "", kakaoName: "" }));
 })();
