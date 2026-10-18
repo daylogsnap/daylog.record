@@ -7,6 +7,8 @@ const fs = require("fs"), path = require("path");
 const ROOT = __dirname, OUT = path.join(ROOT, "dist"), PH = path.join(ROOT, "photos");
 const CATS = { "본식": "본식", "야외스냅": "야외 스냅", "가봉": "가봉", "웨딩데이": "웨딩데이" };
 const IMG = /\.(jpe?g|png|webp|avif)$/i;
+// 페이지 파일은 맨 위(index.html, app.js)에 있으면 그걸 쓰고, 없으면 src 폴더 것을 씁니다.
+const page = f => fs.existsSync(path.join(ROOT, f)) ? path.join(ROOT, f) : path.join(ROOT, "src", f);
 const site = JSON.parse(fs.readFileSync(path.join(ROOT, "site.json"), "utf8"));
 const url = (...parts) => "photos/" + parts.map(encodeURIComponent).join("/");
 const byName = (a, b) => a.localeCompare(b, "ko", { numeric: true });
@@ -56,8 +58,8 @@ const hero = heroFile ? url("대표", heroFile) : (albums[0] && albums[0].cover)
 fs.writeFileSync(path.join(OUT, "photos.json"),
   JSON.stringify({ albums, insta, hero, kakaoUrl: site.kakaoUrl || "", kakaoName: site.kakaoName || "" }));
 
-let html = fs.readFileSync(path.join(ROOT, "src", "index.html"), "utf8");
+let html = fs.readFileSync(page("index.html"), "utf8");
 const og = hero && site.siteUrl ? `<meta property="og:image" content="${site.siteUrl.replace(/\/$/, "")}/${hero}">` : "";
 fs.writeFileSync(path.join(OUT, "index.html"), html.replace("<!--OG_IMAGE-->", og));
-fs.copyFileSync(path.join(ROOT, "src", "app.js"), path.join(OUT, "app.js"));
+fs.copyFileSync(page("app.js"), path.join(OUT, "app.js"));
 console.log(`완료: 인스타 ${insta.length}장, 앨범 ${albums.length}개, 사진 ${albums.reduce((n, a) => n + a.photos.length, 0)}장`);
