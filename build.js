@@ -48,13 +48,16 @@ for (const [folder, label] of Object.entries(CATS)) {
 albums.sort((a, b) => byName(b.sortKey, a.sortKey));
 albums.forEach(a => delete a.sortKey);
 
+// 인스타 피드: photos/인스타 폴더 사진 (파일 이름순, 최대 12장)
+const insta = images(path.join(PH, "인스타")).slice(0, 12).map(f => url("인스타", f));
+
 const heroFile = images(path.join(PH, "대표"))[0];
 const hero = heroFile ? url("대표", heroFile) : (albums[0] && albums[0].cover) || "";
 fs.writeFileSync(path.join(OUT, "photos.json"),
-  JSON.stringify({ albums, hero, kakaoUrl: site.kakaoUrl || "", kakaoName: site.kakaoName || "" }));
+  JSON.stringify({ albums, insta, hero, kakaoUrl: site.kakaoUrl || "", kakaoName: site.kakaoName || "" }));
 
 let html = fs.readFileSync(path.join(ROOT, "src", "index.html"), "utf8");
 const og = hero && site.siteUrl ? `<meta property="og:image" content="${site.siteUrl.replace(/\/$/, "")}/${hero}">` : "";
 fs.writeFileSync(path.join(OUT, "index.html"), html.replace("<!--OG_IMAGE-->", og));
 fs.copyFileSync(path.join(ROOT, "src", "app.js"), path.join(OUT, "app.js"));
-console.log(`완료: 앨범 ${albums.length}개, 사진 ${albums.reduce((n, a) => n + a.photos.length, 0)}장`);
+console.log(`완료: 인스타 ${insta.length}장, 앨범 ${albums.length}개, 사진 ${albums.reduce((n, a) => n + a.photos.length, 0)}장`);
