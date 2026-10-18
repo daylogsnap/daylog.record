@@ -25,6 +25,17 @@
       box.appendChild(b);
     });
     filter();
+    const insta = data.insta || [];
+    if (insta.length) {
+      const g = $("instaGrid");
+      insta.forEach(src => {
+        const a = el("a"); a.href = "https://www.instagram.com/daylog.record/"; a.target = "_blank"; a.rel = "noopener";
+        a.setAttribute("aria-label", "인스타그램 @daylog.record 보기");
+        const im = new Image(); im.src = src; im.alt = "데이로그레코드 인스타그램 사진"; im.loading = "lazy";
+        a.appendChild(im); g.appendChild(a);
+      });
+      $("instagram").hidden = false;
+    }
     if (data.hero) {
       const im = new Image(); im.src = data.hero; im.alt = "대표 사진"; im.fetchPriority = "high";
       $("hero").prepend(im); $("heroCap").hidden = true;
