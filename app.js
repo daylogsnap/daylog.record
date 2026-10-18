@@ -27,13 +27,17 @@
     filter();
     const insta = data.insta || [];
     if (insta.length) {
-      const g = $("instaGrid");
-      insta.forEach(src => {
+      // 같은 사진 묶음을 두 번 이어 붙여서 끊김 없이 계속 흐르게 함
+      const track = el("div", "insta-track");
+      [0, 1].forEach(copy => insta.forEach(src => {
         const a = el("a"); a.href = "https://www.instagram.com/daylog.record/"; a.target = "_blank"; a.rel = "noopener";
         a.setAttribute("aria-label", "인스타그램 @daylog.record 보기");
-        const im = new Image(); im.src = src; im.alt = "데이로그레코드 인스타그램 사진"; im.loading = "lazy";
-        a.appendChild(im); g.appendChild(a);
-      });
+        if (copy) { a.setAttribute("aria-hidden", "true"); a.tabIndex = -1; }
+        const im = new Image(); im.src = src; im.alt = copy ? "" : "데이로그레코드 인스타그램 사진"; im.loading = "lazy";
+        a.appendChild(im); track.appendChild(a);
+      }));
+      track.style.setProperty("--dur", Math.max(24, insta.length * 6) + "s");
+      $("instaGrid").appendChild(track);
       $("instagram").hidden = false;
     }
     if (data.hero) {
