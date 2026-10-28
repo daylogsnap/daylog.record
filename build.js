@@ -86,7 +86,35 @@ fs.writeFileSync(path.join(OUT, "photos.json"),
   JSON.stringify({ albums, insta, hero, needs: site.needs || [], kakaoUrl: site.kakaoUrl || "", kakaoName: site.kakaoName || "" }));
 
 let html = fs.readFileSync(page("index.html"), "utf8");
-const og = hero && site.siteUrl ? `<meta property="og:image" content="${site.siteUrl.replace(/\/$/, "")}/${hero}">` : "";
-fs.writeFileSync(path.join(OUT, "index.html"), html.replace("<!--OG_IMAGE-->", og));
+const base = (site.siteUrl || "").replace(/\/$/, "");
+const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const og = hero && base ? `<meta property="og:image" content="${base}/${hero}">` : "";
+// 검색엔진용: 주소, 소유확인 태그, 업체 정보(구조화 데이터)
+const ld = {
+  "@context": "https://schema.org", "@type": "ProfessionalService", name: "데이로그레코드 웨딩스냅", alternateName: "daylog.record",
+  url: base + "/", image: hero ? base + "/" + hero : undefined, description: "서울·경기 본식스냅, 아이폰스냅, 서브스냅, 스몰웨딩 스냅",
+  areaServed: ["서울", "경기"], priceRange: "₩250,000 ~ ₩700,000", sameAs: ["https://www.instagram.com/daylog.record/"]
+};
+const head = [
+  base && `<link rel="canonical" href="${base}/">`, base && `<meta property="og:url" content="${base}/">`,
+  `<meta name="twitter:card" content="summary_large_image">`,
+  site.naverVerification && `<meta name="naver-site-verification" content="${esc(site.naverVerification)}">`,
+  site.googleVerification && `<meta name="google-site-verification" content="${esc(site.googleVerification)}">`,
+  `<script type="application/ld+json">${JSON.stringify(ld)}</script>`
+].filter(Boolean).join("\n");
+// 자바스크립트를 안 읽는 검색 로봇도 앨범 내용을 볼 수 있게 미리 그려 둠 (화면에서는 app.js가 다시 그림)
+const staticAlbums = albums.map(a => `<a class="album" href="#portfolio"><div class="cover"><img src="${a.cover}" alt="${esc(a.title)} ${esc(a.venue)} 웨딩스냅" loading="lazy"></div><div class="t">${esc(a.title)}</div><div class="m"><span>${esc(a.venue || a.cat)}</span><span>${esc(a.date)}</span><span>${a.photos.length}장</span></div><p hidden>${esc(a.intro)}</p></a>`).join("");
+html = html.replace("<!--OG_IMAGE-->", og).replace("<!--SEO_HEAD-->", head).replace("<!--ALBUMS_STATIC-->", staticAlbums);
+fs.writeFileSync(path.join(OUT, "index.html"), html);
+// 사이트맵 + robots
+if (base) {
+  const today = new Date().toISOString().slice(0, 10);
+  const imgs = albums.flatMap(a => a.photos.map(p => `<image:image><image:loc>${base}/${p.src}</image:loc><image:title>${esc(a.title + (p.cap ? " · " + p.cap : ""))}</image:title></image:image>`)).join("");
+  fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"><url><loc>${base}/</loc><lastmod>${today}</lastmod>${imgs}</url></urlset>\n`);
+  fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${base}/sitemap.xml\n`);
+}
+// 소유확인용 파일(검색엔진이 파일 방식을 요구할 때): verify 폴더 안 파일을 사이트 맨 위에 그대로 복사
+const VER = path.join(ROOT, "verify");
+for (const f of ls(VER).filter(d => d.isFile())) fs.copyFileSync(path.join(VER, f.name), path.join(OUT, f.name));
 fs.copyFileSync(page("app.js"), path.join(OUT, "app.js"));
 console.log(`완료: 인스타 ${insta.length}장, 앨범 ${albums.length}개, 사진 ${albums.reduce((n, a) => n + a.photos.length, 0)}장`);
