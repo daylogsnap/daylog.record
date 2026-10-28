@@ -2,29 +2,67 @@
   const $ = id => document.getElementById(id);
   const tones = ["var(--tile-a)", "var(--tile-b)", "var(--tile-c)"];
   const demo = [["본식", "식장 이름"], ["야외 스냅", "촬영 장소"], ["본식", "식장 이름"]];
-  let cat = "all", albums = [];
+  let albums = [], needs = [], st = { venue: "all", concept: "all", need: null };
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const VENUE_ORDER = ["호텔", "웨딩홀", "루프탑·가든", "채플·교회", "레스토랑", "전통혼례장"];
+  const CONCEPT_ORDER = ["밝은 자연광", "화사한 플라워", "캔들·무드", "스몰웨딩", "전통·한복", "가족·하객 중심"];
+  const camTag = a => a.camera ? (a.camera.includes("아이폰") ? "아이폰 촬영" : a.camera + " 촬영") : "";
+  const tagsOf = a => [a.venue, ...(a.concepts || []), camTag(a)].filter(Boolean);
+  const byOrder = order => (x, y) => { const i = order.indexOf(x), j = order.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j) || x.localeCompare(y, "ko"); };
+  const uniq = arr => [...new Set(arr)];
+
+  // 상품 이름으로 가격 찾기 (상품 섹션의 카드에서 읽어서 가격을 두 군데 따로 관리하지 않음)
+  function priceOf(name) {
+    for (const art of document.querySelectorAll("#packages article")) {
+      const h = art.querySelector("h4"); if (!h) continue;
+      if (h.textContent.replace(/\s+/g, " ").trim() === name) { const p = art.querySelector(".pr b, .sp-pr"); return p ? p.textContent.trim() : ""; }
+    }
+    return "";
+  }
+  function bookWith(pkg, venue) {
+    const sel = $("pkg"); if (pkg && [...sel.options].some(o => o.text === pkg)) sel.value = pkg;
+    if (venue && !$("venue").value) $("venue").placeholder = "예식장 이름 (예: " + venue + ")";
+    $("booking").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function chips(box, values, key, order) {
+    box.textContent = "";
+    ["all", ...values.sort(byOrder(order))].forEach(v => {
+      const c = el("button", "chip", v === "all" ? "전체" : v); c.type = "button";
+      c.setAttribute("aria-pressed", st[key] === v);
+      c.onclick = () => { st[key] = v; st.need = null; sync(); };
+      box.appendChild(c);
+    });
+  }
 
   function render(data) {
-    albums = data.albums || [];
+    albums = data.albums || []; needs = (data.needs || []).filter(n => albums.some(a => tagsOf(a).includes(n.tag)));
     const box = $("albums"); box.textContent = "";
     if (!albums.length) {
       demo.forEach((p, i) => {
         const card = el("div", "album"); const c = el("div", "cover");
         c.style.background = `linear-gradient(${160 + i * 9}deg,${tones[i % 3]},${tones[(i + 1) % 3]})`;
-        card.append(c, el("div", "t", p[1]), el("div", "m", p[0] + " · 준비 중"));
-        card.dataset.cat = p[0]; box.appendChild(card);
+        card.append(c, el("div", "t", p[1]), el("div", "m", p[0] + " · 준비 중")); box.appendChild(card);
       });
     }
     albums.forEach((a, i) => {
-      const b = el("button", "album"); b.type = "button"; b.dataset.cat = a.cat;
+      const b = el("button", "album"); b.type = "button";
       const c = el("div", "cover"); const im = new Image(); im.src = a.cover; im.alt = a.title + " 대표 사진"; im.loading = "lazy"; c.appendChild(im);
-      const m = el("div", "m"); m.append(el("span", "", a.cat), el("span", "", a.date), el("span", "", a.photos.length + "장"));
-      b.append(c, el("div", "t", a.title), m);
+      const m = el("div", "m"); m.append(el("span", "", a.venue || a.cat), el("span", "", a.date), el("span", "", a.photos.length + "장"));
+      const t = el("div", "tags"); (a.concepts || []).forEach(x => t.appendChild(el("span", "tag", x))); if (camTag(a)) t.appendChild(el("span", "tag cam", camTag(a)));
+      b.append(c, el("div", "t", a.title), m, t);
       b.onclick = () => openAlbum(i, true);
       box.appendChild(b);
     });
-    filter();
+    const nb = $("needs"); nb.textContent = "";
+    needs.forEach(n => {
+      const b = el("button", "need"); b.type = "button"; b.dataset.tag = n.tag;
+      b.append(el("b", "", n.title), el("span", "", n.desc), el("small", "", "추천 · " + n.pkg));
+      b.onclick = () => { st.need = st.need === n ? null : n; st.venue = "all"; st.concept = "all"; sync(); if (st.need) $("rec").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+      nb.appendChild(b);
+    });
+    $("needs").parentElement.hidden = !needs.length;
+    sync();
     const insta = data.insta || [];
     if (insta.length) {
       // 같은 사진 묶음을 두 번 이어 붙여서 끊김 없이 계속 흐르게 함
@@ -48,17 +86,37 @@
     if (data.kakaoUrl) $("kakao").href = data.kakaoUrl; else $("kakao").hidden = true;
     const m = location.hash.match(/^#album(\d+)$/); if (m && albums[+m[1]]) openAlbum(+m[1], false);
   }
-  function filter() { $("albums").querySelectorAll(".album").forEach(t => t.hidden = !(cat === "all" || t.dataset.cat === cat)); }
-  document.querySelectorAll(".chip[data-cat]").forEach(c => c.onclick = () => {
-    document.querySelectorAll(".chip[data-cat]").forEach(x => x.setAttribute("aria-pressed", x === c));
-    cat = c.dataset.cat; filter();
-  });
+  function sync() {
+    const venues = uniq(albums.map(a => a.venue).filter(Boolean)), concepts = uniq(albums.flatMap(a => a.concepts || []));
+    chips($("fVenue"), venues, "venue", VENUE_ORDER); chips($("fConcept"), concepts, "concept", CONCEPT_ORDER);
+    $("fVenue").closest(".frow").hidden = !venues.length; $("fConcept").closest(".frow").hidden = !concepts.length;
+    let shown = 0;
+    $("albums").querySelectorAll("button.album").forEach((t, i) => {
+      const a = albums[i], tags = tagsOf(a);
+      const ok = (st.venue === "all" || a.venue === st.venue) && (st.concept === "all" || (a.concepts || []).includes(st.concept)) && (!st.need || tags.includes(st.need.tag));
+      t.hidden = !ok; if (ok) shown++;
+    });
+    $("empty").hidden = !albums.length || shown > 0;
+    $("needs").querySelectorAll(".need").forEach(b => b.setAttribute("aria-pressed", !!st.need && b.dataset.tag === st.need.tag));
+    const n = st.need; $("rec").hidden = !n;
+    if (n) {
+      $("recTitle").textContent = n.title; $("recCount").textContent = "비슷한 실제 촬영 앨범 " + shown + "개";
+      $("recPkg").textContent = n.pkg; $("recPrice").textContent = priceOf(n.pkg);
+    }
+  }
+  $("recBook").onclick = () => st.need && bookWith(st.need.pkg);
+  $("recClear").onclick = () => { st.need = null; sync(); };
 
   // 앨범 화면 (폰 뒤로가기로 닫힘)
-  const av = $("av");
+  const av = $("av"); let curAlbum = null;
   function openAlbum(i, push) {
     const a = albums[i];
-    $("avMeta").textContent = [a.cat, a.date, a.photos.length + "장"].filter(Boolean).join(" · ");
+    $("avMeta").textContent = [a.venue || a.cat, a.date, a.photos.length + "장", camTag(a)].filter(Boolean).join(" · ");
+    const tg = $("avTags"); tg.textContent = ""; (a.concepts || []).forEach(x => tg.appendChild(el("span", "tag", x)));
+    $("avRec").hidden = !(a.forWho || a.pkg);
+    $("avFor").textContent = a.forWho || ""; $("avPkg").textContent = a.pkg ? "추천 상품 · " + a.pkg : ""; $("avPrice").textContent = a.pkg ? priceOf(a.pkg) : "";
+    $("avBook").textContent = a.pkg ? a.pkg + "으로 문의하기" : "이 분위기로 예약 문의하기";
+    curAlbum = a;
     $("avTitle").textContent = a.title;
     $("avIntro").textContent = a.intro; $("avIntro").hidden = !a.intro;
     const g = $("avGrid"); g.textContent = "";
@@ -74,7 +132,8 @@
   }
   function closeAlbum() { av.hidden = true; document.body.style.overflow = ""; }
   $("avBack").onclick = () => { if (history.state && history.state.album != null) history.back(); else { closeAlbum(); history.replaceState(null, "", "#portfolio"); } };
-  $("avBook").onclick = () => { closeAlbum(); history.replaceState(null, "", "#booking"); };
+  $("avBook").onclick = e => { e.preventDefault(); closeAlbum(); history.replaceState(null, "", "#booking"); if (curAlbum) bookWith(curAlbum.pkg, curAlbum.title); };
+  $("avBack2").onclick = () => $("avBack").click();
   window.addEventListener("popstate", () => { if (!/^#album/.test(location.hash)) closeAlbum(); lb.hidden = true; });
 
   const lb = $("lb");
