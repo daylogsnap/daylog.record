@@ -141,6 +141,9 @@ details p{margin:10px 0 0;color:var(--muted);max-width:68ch}
 .ch span{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ch b{font-weight:600;word-break:break-all}
 .ch a{color:var(--rose);text-decoration:underline;text-underline-offset:3px}
+.wa-qr{display:flex;align-items:center;gap:16px;margin:20px 0 0;padding:14px;background:var(--bg);border-radius:8px;max-width:360px}
+.wa-qr img{width:96px;height:96px;flex:none}
+.wa-qr figcaption{font-size:13px;color:var(--muted);line-height:1.5}
 form{background:var(--bg);border-radius:8px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:18px;min-width:0}
 .field{display:grid;gap:7px;min-width:0}
 .field.full{grid-column:1/-1}
@@ -343,8 +346,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
       <div class="inq-side">
         <p class="eyebrow">Inquiry</p>
         <h2>Tell me about your trip.</h2>
-        <p>Fill in the form and your message is written for you. Copy it and send it as a DM on Instagram or KakaoTalk. I reply within 24 hours, Korea time (GMT+9).</p>
+        <p>Fill in the form and your message is written for you. Copy it and send it on WhatsApp, Instagram or KakaoTalk. I reply within 24 hours, Korea time (GMT+9).</p>
         <div class="channels" id="channels"></div>
+        <figure class="wa-qr"><img src="img/whatsapp-qr.png" alt="WhatsApp QR code for DAYLOG" width="150" height="150" loading="lazy"><figcaption>Scan with your phone camera to chat on WhatsApp</figcaption></figure>
       </div>
 
       <form id="f" novalidate>
@@ -373,7 +377,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
         </div>
         <div class="result" id="result" hidden>
           <h3>Your inquiry is ready</h3>
-          <p>Copy it and paste into an Instagram DM or KakaoTalk chat.</p>
+          <p>Copy it and paste into WhatsApp, an Instagram DM or KakaoTalk.</p>
           <pre id="out"></pre>
           <div class="row"><button class="btn sm" type="button" id="copy">Copy message</button><span class="copied" id="copied" hidden>Copied</span></div>
         </div>
@@ -387,6 +391,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 <script>
 // Contact channels shown on the page. Add WhatsApp here once the business number is ready.
 const CONTACT = [
+  { label: "WhatsApp", value: "Chat on WhatsApp", href: "https://wa.me/qr/654WHBKKZUXYH1?s=p" },
   { label: "Instagram", value: "@daylog.record", href: "https://www.instagram.com/daylog.record" },
   { label: "KakaoTalk", value: "DAYLOG.RECORD channel", href: "https://pf.kakao.com/_dHbQn/chat" }
 ];
