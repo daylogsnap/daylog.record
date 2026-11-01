@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Relaxed couple, pre-wedding and travel photo sessions in Seoul, guided in English by a Seoul wedding photographer.">
+<meta property="og:title" content="DAYLOG Seoul Snap">
+<meta property="og:description" content="Couple and pre-wedding photo sessions in Seoul, guided in English.">
+<meta property="og:image" content="https://daylog-record.pages.dev/seoul/img/hero.jpg">
+<meta property="og:type" content="website">
+<style>*{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>DAYLOG Seoul Snap</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Manrope:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: white gallery page; film-frame strip in the hero, packages as a price sheet, inquiry form that builds a ready-to-send message */
+:root{
+  --bg:#FFFFFF; --paper:#F7F5F2; --ink:#1F1B18; --muted:#6F6862; --line:#E6E1DB;
+  --rose:#A9706A; --rose-soft:#F3E7E4; --sage:#6B7360;
+  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --body:"Manrope",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"DM Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+section{padding-block:88px;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:1fr 1.4fr;gap:32px;align-items:end;margin-bottom:48px}
+.sec-head h2{font-size:clamp(34px,5vw,52px);line-height:1.05}
+.sec-head p{color:var(--muted);margin:0;max-width:52ch}
+
+/* nav */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:.18em;text-decoration:none}
+.logo small{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.12em;color:var(--muted);margin-left:10px}
+.nav nav{display:flex;gap:26px;align-items:center;font-size:14px}
+.nav nav a{text-decoration:none;color:var(--muted)}
+.nav nav a:hover{color:var(--ink)}
+.nav nav a.btn,.nav nav a.btn:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 14px/1 var(--body);padding:14px 22px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:#fff;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:#000}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.sm{padding:10px 16px;font-size:13px}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+
+/* hero */
+.hero{padding-block:72px 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:end}
+.hero h1{font-size:clamp(46px,7.4vw,96px);line-height:.98}
+.hero h1 em{font-style:italic;color:var(--rose)}
+.hero-side p{color:var(--muted);margin:0 0 24px;max-width:40ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:28px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.facts span::before{content:"— ";color:var(--rose)}
+
+/* film strip */
+.strip{margin-top:56px;background:#141210;border-radius:4px;padding:14px 0;overflow:hidden}
+.holes{height:10px;background-image:radial-gradient(circle,#F7F5F2 0 2.6px,transparent 3px);background-size:22px 10px;opacity:.85}
+.frames{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 12px}
+.frame{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;color:#fff}
+.frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55));}
+.frame>*{position:relative;z-index:1}
+.frame{background:#2A2420 center/cover no-repeat}
+.f1{background-image:url(img/gyeongbokgung.jpg)}
+.f2{background-image:url(img/bukchon.jpg)}
+.f3{background-image:url(img/seongsu.jpg)}
+.f4{background-image:url(img/hanriver.jpg)}
+.hero-img{position:relative;margin-top:48px;border-radius:4px;overflow:hidden;aspect-ratio:21/9;max-width:100%;background:#2A2420}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center 60%;display:block}
+.hero-img figcaption{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#fff;background:rgba(20,18,16,.45);padding:6px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.pkg-img{margin:-28px -28px 4px;aspect-ratio:4/3;max-width:calc(100% + 56px);overflow:hidden;border-radius:6px 6px 0 0;background:var(--paper)}
+.pkg-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.pkg:hover .pkg-img img{transform:scale(1.03)}
+.about-img{aspect-ratio:4/5;max-width:100%;border-radius:4px;overflow:hidden;background:var(--paper)}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block}
+.about-text{display:grid;gap:28px;min-width:0}
+.frame b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.1}
+.frame code{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;opacity:.85;margin-top:6px}
+.frame .no{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:10px;opacity:.75;z-index:1}
+.strip-cap{display:flex;justify-content:space-between;gap:12px;padding:6px 14px 0;font-family:var(--mono);font-size:10.5px;color:#C9A27A;letter-spacing:.1em}
+
+/* packages */
+.pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pkg{border:1px solid var(--line);border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.pkg.feature{background:var(--paper);border-color:var(--paper)}
+.pkg .tag{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--rose);background:var(--rose-soft);padding:5px 10px;border-radius:999px}
+.pkg h3{font-size:30px;line-height:1.1}
+.pkg .for{color:var(--muted);font-size:14.5px;margin:0}
+.price{display:flex;align-items:baseline;gap:10px;padding-block:14px;border-block:1px solid var(--line);font-variant-numeric:tabular-nums}
+.price strong{font-family:var(--display);font-size:34px;font-weight:400}
+.price span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.pkg ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:14.5px}
+.pkg li{display:grid;grid-template-columns:16px 1fr;gap:8px}
+.pkg li::before{content:"";width:8px;height:1px;background:var(--rose);margin-top:12px}
+.pkg .btn{margin-top:auto}
+.note{font-size:13.5px;color:var(--muted);margin-top:22px}
+
+/* locations */
+.locs{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px}
+.loc{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding-block:22px;border-bottom:1px solid var(--line)}
+.loc h3{font-size:26px}
+.loc .ko{font-family:var(--body);font-size:14px;color:var(--muted);margin-left:8px}
+.loc p{grid-column:1/-1;margin:0;color:var(--muted);font-size:14.5px}
+.loc .light{font-family:var(--mono);font-size:11.5px;color:var(--sage);letter-spacing:.06em;text-align:right;white-space:nowrap}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:s}
+.step{counter-increment:s;border-top:1px solid var(--ink);padding-top:18px;min-width:0}
+.step::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:12px;color:var(--rose)}
+.step h3{font-size:24px;margin:10px 0 8px}
+.step p{margin:0;color:var(--muted);font-size:14.5px}
+
+/* about */
+.about{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.quote{font-family:var(--display);font-style:italic;font-size:clamp(30px,4vw,44px);line-height:1.15;margin:0}
+.quote small{display:block;font-family:var(--mono);font-style:normal;font-size:12px;color:var(--muted);letter-spacing:.08em;margin-top:18px}
+.about p{color:var(--muted);margin:0 0 14px;max-width:58ch}
+
+/* faq */
+.faq{display:grid;gap:0;max-width:820px}
+details{border-bottom:1px solid var(--line);padding-block:18px}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font-weight:600;font-size:16.5px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--rose);font-size:18px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--muted);max-width:68ch}
+
+/* inquiry */
+.inq{background:var(--paper);border-top:none}
+.inq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.inq-side h2{font-size:clamp(36px,5vw,56px);line-height:1.02;margin:12px 0 18px}
+.inq-side p{color:var(--muted);max-width:40ch}
+.channels{display:grid;gap:10px;margin-top:28px}
+.ch{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:baseline;padding-block:10px;border-top:1px solid var(--line);font-size:14.5px}
+.ch span{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ch b{font-weight:600;word-break:break-all}
+.ch a{color:var(--rose);text-decoration:underline;text-underline-offset:3px}
+form{background:var(--bg);border-radius:8px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:18px;min-width:0}
+.field{display:grid;gap:7px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:600}
+label i{font-style:normal;color:var(--muted);font-weight:400}
+input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px 14px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px var(--rose-soft)}
+textarea{min-height:110px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips label{font-weight:500;font-size:13.5px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;background:var(--bg)}
+.chips input:checked+label{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chips input:focus-visible+label{outline:2px solid var(--rose);outline-offset:2px}
+.err{grid-column:1/-1;color:#A3423A;font-size:13.5px;margin:0}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}
+.form-foot small{color:var(--muted);font-size:12.5px;max-width:40ch}
+.result{grid-column:1/-1;border:1px dashed var(--rose);border-radius:6px;padding:18px;background:var(--rose-soft)}
+.result h3{font-family:var(--body);font-weight:700;font-size:15px;margin:0 0 6px}
+.result p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.result pre{white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:12.5px;background:var(--bg);border-radius:4px;padding:14px;margin:0 0 12px;max-height:260px;overflow:auto}
+.result .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.copied{font-family:var(--mono);font-size:12px;color:var(--sage)}
+
+footer{padding-block:40px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+@media (max-width:900px){
+  .hero-grid,.sec-head,.about,.inq-grid{grid-template-columns:1fr}
+  .pkgs{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .frames{grid-template-columns:repeat(2,1fr)}
+  .nav nav a:not(.btn){display:none}
+}
+@media (max-width:560px){
+  section{padding-block:64px}
+  .locs,.steps{grid-template-columns:1fr}
+  form{grid-template-columns:1fr;padding:22px}
+  .logo small{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .frame{transition:transform .5s ease}
+  .frame:hover{transform:scale(1.02)}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">DAYLOG<small>SEOUL SNAP</small></a>
+    <nav>
+      <a href="#packages">Packages</a>
+      <a href="#locations">Locations</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn sm" href="#inquire">Inquire</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Photographer in Seoul · Couples &amp; Pre-wedding</p>
+          <h1 style="margin-top:18px">Your trip to Korea, <em>kept</em> in photographs.</h1>
+        </div>
+        <div class="hero-side">
+          <p>Relaxed, natural photo sessions for travelers in Seoul. Couples, pre-wedding, proposals and solo portraits, guided in English from the first message to the final gallery.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#inquire">Check my date</a>
+            <a class="btn ghost" href="#packages">See packages</a>
+          </div>
+          <div class="facts"><span>Edited photos in 7 days</span><span>Hanbok-friendly locations</span><span>English guidance</span></div>
+        </div>
+      </div>
+
+      <figure class="hero-img" style="margin-inline:0">
+        <img src="img/hero.jpg" alt="Seoul rooftops and Namsan Tower at golden hour, seen from a hillside in Yongsan" width="1800" height="1200">
+        <figcaption>YONGSAN · 18:10 · GOLDEN HOUR</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="packages">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Packages</p><h2>Pick the length, we plan the rest.</h2></div>
+        <p>Every session includes location planning, posing help and a private online gallery. Prices are in Korean won; your card or PayPal converts them for you.</p>
+      </div>
+      <div class="pkgs">
+        <article class="pkg">
+          <div class="pkg-img"><img src="img/seongsu.jpg" alt="Seongsu-dong café street" loading="lazy" width="1100" height="1467"></div>
+          <span class="tag">Solo &amp; Friends</span>
+          <h3>Travel Portrait</h3>
+          <p class="for">A quick session at one spot, for solo travelers or a small group of friends.</p>
+          <div class="price"><strong>₩150,000</strong><span>≈ US$110 · 1 hour</span></div>
+          <ul><li>1 location</li><li>30+ edited photos</li><li>All original JPGs</li><li>Delivery in 7 days</li></ul>
+          <a class="btn ghost" href="#inquire" data-pkg="Travel Portrait">Inquire</a>
+        </article>
+        <article class="pkg feature">
+          <div class="pkg-img"><img src="img/hanriver.jpg" alt="Han River park at sunset" loading="lazy" width="1100" height="1467"></div>
+          <span class="tag">Most booked</span>
+          <h3>Couple Snap</h3>
+          <p class="for">For couples, honeymooners and anniversaries. Two places, a walk between them.</p>
+          <div class="price"><strong>₩280,000</strong><span>≈ US$200 · 2 hours</span></div>
+          <ul><li>2 locations</li><li>60+ edited photos</li><li>Hanbok session welcome</li><li>Delivery in 7 days</li></ul>
+          <a class="btn" href="#inquire" data-pkg="Couple Snap">Inquire</a>
+        </article>
+        <article class="pkg">
+          <div class="pkg-img"><img src="img/gyeongbokgung.jpg" alt="Gyeongbokgung Palace at golden hour" loading="lazy" width="1100" height="1467"></div>
+          <span class="tag">Wedding</span>
+          <h3>Pre-wedding</h3>
+          <p class="for">Wedding dress or suit, palaces and city lights. Made for your invitation and your wall.</p>
+          <div class="price"><strong>₩480,000</strong><span>≈ US$350 · 3–4 hours</span></div>
+          <ul><li>3 locations, day to night</li><li>100+ edited photos</li><li>10 detailed retouches</li><li>Dress &amp; hanbok rental help</li></ul>
+          <a class="btn ghost" href="#inquire" data-pkg="Pre-wedding">Inquire</a>
+        </article>
+      </div>
+      <p class="note">Proposal shoots and custom plans are available. Ask in the form below.</p>
+    </div>
+  </section>
+
+  <section id="locations">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Locations</p><h2>Where Seoul looks its best.</h2></div>
+        <p>We pick the place by the light, not just the landmark. Not sure? Tell me what you like and I'll suggest a route.</p>
+      </div>
+      <div class="strip" aria-label="Four shoot locations shown as film frames" style="margin:0 0 40px">
+        <div class="holes"></div>
+        <div class="frames">
+          <div class="frame f1" role="img" aria-label="Gyeongbokgung Palace at golden hour"><span class="no">01A</span><b>Gyeongbokgung</b><code>17:40 · golden hour</code></div>
+          <div class="frame f2" role="img" aria-label="Bukchon Hanok Village alley in the morning"><span class="no">02A</span><b>Bukchon Hanok</b><code>08:30 · soft morning</code></div>
+          <div class="frame f3" role="img" aria-label="Brick café street in Seongsu-dong"><span class="no">03A</span><b>Seongsu-dong</b><code>15:00 · street &amp; cafés</code></div>
+          <div class="frame f4" role="img" aria-label="Han River park at sunset"><span class="no">04A</span><b>Han River</b><code>19:10 · sunset</code></div>
+        </div>
+        <div class="holes"></div>
+        <div class="strip-cap"><span>DAYLOG 400</span><span>LOCATION MOODS · SEOUL</span></div>
+      </div>
+      <div class="locs">
+        <div class="loc"><h3>Gyeongbokgung<span class="ko">경복궁</span></h3><span class="light">BEST · LATE AFTERNOON</span><p>The main royal palace. Free entry when you wear hanbok.</p></div>
+        <div class="loc"><h3>Bukchon Hanok Village<span class="ko">북촌</span></h3><span class="light">BEST · EARLY MORNING</span><p>Traditional rooftops and quiet alleys. We go early, before the crowds.</p></div>
+        <div class="loc"><h3>Seongsu-dong<span class="ko">성수동</span></h3><span class="light">BEST · AFTERNOON</span><p>Brick warehouses, cafés and pop-up stores. Casual and modern.</p></div>
+        <div class="loc"><h3>Han River Parks<span class="ko">한강</span></h3><span class="light">BEST · SUNSET</span><p>Wide skies and city lights. Easy to pair with a picnic.</p></div>
+        <div class="loc"><h3>Yongsan &amp; Haebangchon<span class="ko">용산</span></h3><span class="light">BEST · BLUE HOUR</span><p>Hillside streets with views of Namsan Tower. My home neighborhood.</p></div>
+        <div class="loc"><h3>Deoksugung Stone Wall<span class="ko">덕수궁 돌담길</span></h3><span class="light">BEST · AUTUMN</span><p>A tree-lined palace wall walk, golden in October and November.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">How it works</p><h2>From first message to final gallery.</h2></div>
+        <p>Most travelers book two to four weeks ahead. Last-minute dates are sometimes open, so ask anyway.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Send an inquiry</h3><p>Share your date, package and ideas. You'll get a reply within 24 hours.</p></div>
+        <div class="step"><h3>Lock your date</h3><p>A 30% deposit holds the slot. We plan the route, outfits and meeting point.</p></div>
+        <div class="step"><h3>Shoot day</h3><p>Meet at the station. I'll guide your poses, so no modeling experience needed.</p></div>
+        <div class="step"><h3>Get your photos</h3><p>Your edited gallery arrives within 7 days, ready to download anywhere.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap about">
+      <div class="about-img"><img src="img/still.jpg" alt="Camera, contact sheet and a map of Seoul on a café table" loading="lazy" width="1100" height="1375"></div>
+      <div class="about-text">
+        <p class="quote">“Recording is about process, not perfection.”<small>DAYLOG · JUNG DAEHEE</small></p>
+        <div>
+          <p class="eyebrow" style="margin-bottom:14px">About your photographer</p>
+          <p>I'm Daehee, a Seoul-based photographer who shoots weddings for Korean couples and portraits of the people I meet on the street.</p>
+          <p>I care more about how you feel in front of the camera than about perfect poses. Expect a walk, a lot of laughing, and photos that look like your trip actually felt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">FAQ</p><h2>Good to know.</h2></div>
+        <p>Anything else, just ask in your inquiry.</p>
+      </div>
+      <div class="faq">
+        <details><summary>I've never been photographed. Is that okay?</summary><p>Yes, most of my clients haven't. I'll show you simple poses and talk you through each spot.</p></details>
+        <details><summary>Can you help with hanbok or wedding dress rental?</summary><p>I can recommend rental shops near the shoot location and help with the booking in Korean.</p></details>
+        <details><summary>What if it rains?</summary><p>We reschedule to another day of your trip at no cost, or move to an indoor spot if you prefer.</p></details>
+        <details><summary>How do I pay?</summary><p>The deposit is paid by PayPal or Wise after your date is confirmed. The rest is paid on the shoot day.</p></details>
+        <details><summary>Can I cancel?</summary><p>Cancel 7 or more days before for a full deposit refund. After that, the deposit can move to a new date once.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="inq" id="inquire">
+    <div class="wrap inq-grid">
+      <div class="inq-side">
+        <p class="eyebrow">Inquiry</p>
+        <h2>Tell me about your trip.</h2>
+        <p>Fill in the form and your message is written for you. Copy it and send it as a DM on Instagram or KakaoTalk. I reply within 24 hours, Korea time (GMT+9).</p>
+        <div class="channels" id="channels"></div>
+      </div>
+
+      <form id="f" novalidate>
+        <div class="field"><label for="name">Your name</label><input id="name" autocomplete="name" placeholder="Emma Wilson"></div>
+        <div class="field"><label for="email">Email or Instagram</label><input id="email" placeholder="emma@mail.com"></div>
+        <div class="field"><label for="from">Country</label><input id="from" autocomplete="country-name" placeholder="Australia"></div>
+        <div class="field"><label for="date">Preferred date <i>(or range)</i></label><input id="date" placeholder="Nov 20, or Nov 18–22"></div>
+        <div class="field full"><label>Package</label>
+          <div class="chips" id="pkg">
+            <input type="radio" name="pkg" id="p1" value="Travel Portrait"><label for="p1">Travel Portrait</label>
+            <input type="radio" name="pkg" id="p2" value="Couple Snap" checked><label for="p2">Couple Snap</label>
+            <input type="radio" name="pkg" id="p3" value="Pre-wedding"><label for="p3">Pre-wedding</label>
+            <input type="radio" name="pkg" id="p4" value="Proposal / Custom"><label for="p4">Proposal / Custom</label>
+          </div>
+        </div>
+        <div class="field"><label for="people">Number of people</label>
+          <select id="people"><option>1</option><option selected>2</option><option>3–4</option><option>5+</option></select></div>
+        <div class="field"><label for="outfit">Outfit</label>
+          <select id="outfit"><option>Casual / my own clothes</option><option>Hanbok</option><option>Wedding dress &amp; suit</option><option>Not sure yet</option></select></div>
+        <div class="field full"><label for="loc">Locations you like <i>(optional)</i></label><input id="loc" placeholder="Gyeongbokgung, Han River…"></div>
+        <div class="field full"><label for="msg">Anything else? <i>(optional)</i></label><textarea id="msg" placeholder="It's our 5th anniversary and we'd love some night photos."></textarea></div>
+        <p class="err" id="err" hidden></p>
+        <div class="form-foot">
+          <small>Nothing is sent from this page. You'll copy the message and send it yourself.</small>
+          <button class="btn" type="submit">Write my inquiry</button>
+        </div>
+        <div class="result" id="result" hidden>
+          <h3>Your inquiry is ready</h3>
+          <p>Copy it and paste into an Instagram DM or KakaoTalk chat.</p>
+          <pre id="out"></pre>
+          <div class="row"><button class="btn sm" type="button" id="copy">Copy message</button><span class="copied" id="copied" hidden>Copied</span></div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>DAYLOG Seoul Snap · Seoul, Korea</span><span>Photos by Jung Daehee</span></div></footer>
+
+<script>
+// Contact channels shown on the page. Add WhatsApp here once the business number is ready.
+const CONTACT = [
+  { label: "Instagram", value: "@daylog.record", href: "https://www.instagram.com/daylog.record" },
+  { label: "KakaoTalk", value: "DAYLOG.RECORD channel", href: "https://pf.kakao.com/_dHbQn/chat" }
+];
+const ch = document.getElementById("channels");
+CONTACT.forEach(c => {
+  const row = document.createElement("div"); row.className = "ch";
+  const s = document.createElement("span"); s.textContent = c.label;
+  const b = document.createElement("b");
+  if (c.href) {
+    const a = document.createElement("a");
+    a.href = c.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = c.value;
+    b.append(a);
+  } else { b.textContent = c.value; }
+  row.append(s, b); ch.append(row);
+});
+
+// Package buttons preselect the package in the form
+document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => {
+  const r = document.querySelector('#pkg input[value="' + a.dataset.pkg + '"]');
+  if (r) r.checked = true;
+}));
+
+const $ = id => document.getElementById(id);
+$("f").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = $("name").value.trim(), contact = $("email").value.trim(), date = $("date").value.trim();
+  const missing = [];
+  if (!name) missing.push("your name");
+  if (!contact) missing.push("an email or Instagram");
+  if (!date) missing.push("a preferred date");
+  if (missing.length) {
+    $("err").textContent = "Please add " + missing.join(", ") + " so I can check availability.";
+    $("err").hidden = false; return;
+  }
+  $("err").hidden = true;
+  const pkg = (document.querySelector('#pkg input:checked') || {}).value || "Not sure";
+  const lines = [
+    "Hi DAYLOG! I'd like to book a photo session in Seoul.",
+    "",
+    "Name: " + name,
+    "Contact: " + contact,
+    $("from").value.trim() ? "From: " + $("from").value.trim() : null,
+    "Date: " + date,
+    "Package: " + pkg,
+    "People: " + $("people").value,
+    "Outfit: " + $("outfit").value,
+    $("loc").value.trim() ? "Locations: " + $("loc").value.trim() : null,
+    $("msg").value.trim() ? "\n" + $("msg").value.trim() : null
+  ].filter(l => l !== null);
+  $("out").textContent = lines.join("\n");
+  $("result").hidden = false; $("copied").hidden = true;
+  $("result").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+});
+
+$("copy").addEventListener("click", () => {
+  const text = $("out").textContent;
+  const done = () => { $("copied").hidden = false; };
+  const fallback = () => {
+    const r = document.createRange(); r.selectNodeContents($("out"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    $("copied").textContent = "Selected. Press Ctrl/Cmd+C"; done();
+  };
+  try { navigator.clipboard.writeText(text).then(() => { $("copied").textContent = "Copied"; done(); }, fallback); }
+  catch (_) { fallback(); }
+});
+</script>
+
+</body>
+</html>

@@ -117,4 +117,7 @@ if (base) {
 const VER = path.join(ROOT, "verify");
 for (const f of ls(VER).filter(d => d.isFile())) fs.copyFileSync(path.join(VER, f.name), path.join(OUT, f.name));
 fs.copyFileSync(page("app.js"), path.join(OUT, "app.js"));
+// 외국인 여행객용 영문 페이지(seoul 폴더)를 /seoul 주소로 그대로 복사
+const SEOUL = path.join(ROOT, "seoul");
+if (fs.existsSync(SEOUL)) fs.cpSync(SEOUL, path.join(OUT, "seoul"), { recursive: true });
 console.log(`완료: 인스타 ${insta.length}장, 앨범 ${albums.length}개, 사진 ${albums.reduce((n, a) => n + a.photos.length, 0)}장`);
